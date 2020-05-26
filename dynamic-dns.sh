@@ -1,4 +1,5 @@
 #!/bin/bash
+set +e
 
 #
 # README
@@ -14,10 +15,13 @@
 #DOMAIN=
 #ZONE_ID=
 
+config="/etc/dynamic-dns/domain.config"
 
 # Source in domain.config file if $DOMAIN hasn't been configured above
-if [[ -z ${DOMAIN} && -f domain.config ]]; then
-  source domain.config
+if ! [[ -z ${DOMAIN} ]]; then
+  echo "Setting domain to ${DOMAIN}"
+elif [[ -f ${config} ]]; then
+  source ${config}
 else
   echo "Domain configuration not set. Exiting."
   exit 1
